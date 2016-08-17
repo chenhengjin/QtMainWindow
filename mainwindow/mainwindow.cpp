@@ -4,6 +4,11 @@
 #include <QString>
 #include <QFileDialog>
 #include <QColorDialog>
+#include <QInputDialog>
+#include <QWidget>
+#include <QLabel>
+#include <QMouseEvent>
+#include <QPainter>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -37,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     saveaction->setShortcut(QKeySequence::Save);
     //状态栏的提示语句
     saveaction->setStatusTip(tr("Save file."));
-    //添加图标,相对路径显示不了，绝对路径能显示
+    //添加图标
     saveaction->setIcon(QIcon(":/save.png"));
     connect(saveaction, SIGNAL(triggered()), this, SLOT(save()));
     //下面将QAction添加到菜单和工具条：
@@ -67,14 +72,15 @@ MainWindow::MainWindow(QWidget *parent) :
     QMenu *help = menuBar()->addMenu(QString::fromLocal8Bit("&帮助"));
     //使用这个QMenu指针添加这个QAction
     help->addAction(helpaction);
-/*********************************标准对话框MessageBox_information*****************************/
+
+/*********************************标准对话框MessageBox*****************************/
     //第一个参数显示文本信息，第二个参数是parent，通常写this
     messageboxaction_information = new QAction(tr("&information"),this);
     //状态栏的提示语句
     messageboxaction_information->setStatusTip(tr("information."));
     connect(messageboxaction_information, SIGNAL(triggered()), this, SLOT(messagebox_information()));
     //新建一个菜单
-    QMenu *messagebox = menuBar()->addMenu(QString::fromLocal8Bit("&对话框"));
+    QMenu *messagebox = menuBar()->addMenu(tr("&MessageBox"));
     //使用这个QMenu指针添加这个QAction
     messagebox->addAction(messageboxaction_information);
 /*********************************标准对话框MessageBox_critical*****************************/
@@ -118,6 +124,40 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(messageboxaction_message, SIGNAL(triggered()), this, SLOT(messagebox_message()));
     //添加到菜单栏
     messagebox->addAction(messageboxaction_message);
+
+    /*********************************标准输入对话框QInoutDialog*****************************/
+    //第一个参数显示文本信息，第二个参数是parent，通常写this
+    inputboxaction = new QAction(QString::fromLocal8Bit("&输入对话框"),this);
+    //状态栏的提示语句
+    inputboxaction->setStatusTip(QString::fromLocal8Bit("输入对话框"));
+    connect(inputboxaction, SIGNAL(triggered()), this, SLOT(inutdialog()));
+    //新建一个菜单
+    QMenu *input = menuBar()->addMenu(QString::fromLocal8Bit("&输入对话框"));
+    //使用这个QMenu指针添加这个QAction
+    input->addAction(inputboxaction);
+
+    /*********************************事件event*****************************/
+    //第一个参数显示文本信息，第二个参数是parent，通常写this
+    eventaction = new QAction(QString::fromLocal8Bit("&事件"),this);
+    //状态栏的提示语句
+    eventaction->setStatusTip(QString::fromLocal8Bit("事件"));
+    connect(eventaction, SIGNAL(triggered()), this, SLOT(event()));
+    //新建一个菜单
+    QMenu *event = menuBar()->addMenu(QString::fromLocal8Bit("&事件(event)"));
+    //使用这个QMenu指针添加这个QAction
+    event->addAction(eventaction);
+
+    /*********************************QPainter*****************************/
+    //第一个参数显示文本信息，第二个参数是parent，通常写this
+    painteraction = new QAction(QString::fromLocal8Bit("&QPainter"),this);
+    //状态栏的提示语句
+    painteraction->setStatusTip(QString::fromLocal8Bit("QPainter"));
+    connect(painteraction, SIGNAL(triggered()), this, SLOT(mypainter()));
+    //新建一个菜单
+    QMenu *painter = menuBar()->addMenu(tr("&QPainter"));
+    //使用这个QMenu指针添加这个QAction
+    painter->addAction(painteraction);
+
 /*********************************添加状态栏*******************************************/
     msgLabel = new QLabel;
     msgLabel->setMinimumSize(msgLabel->sizeHint());
@@ -258,6 +298,145 @@ void MainWindow::messagebox_message(void)
         QMessageBox::aboutQt(NULL, "About Qt");
     }
 }
+
+
+
+void MainWindow::inutdialog(void)
+{
+    bool isOK;
+
+    /**
+     * @brief 获取输入对话框的字符串 ，类似的还有QInputDialog::getInt\QInputDialog::getDouble\QInputDialog::getItem
+     * @param 第一个参数是parant
+     *        第二个参数为对话框的标题
+     *        第三个对话框是在输入框上面的提示语句
+     *        第四个蚕食是用于指明这个QLineEdit的输入模式，
+     *        取值范围是QLineEdit::EchoMode，默认是Normal，也就是正常显示，
+     *        你也可以声明为password，这样就是密码的输入显示了
+     *        第五个参数text是QLineEdit的默认字符串
+     *        第六个参数ok是可选的，如果非NLL，则当用户按下对话框的OK按钮时，
+     *        这个bool变量会被置为true，可以由这个去判断用户是按下的OK还是Cancel，
+     *        从而获知这个text是不是有意义
+     *
+     */
+    QString text = QInputDialog::getText(NULL,
+                                         "Input Dialog",
+                                         "Please input your comment",
+                                         QLineEdit::Normal,
+                                         "your comment",
+                                         &isOK);
+    if(isOK)
+    {
+        QMessageBox::information(NULL,
+                                "Information",
+                                "Your comment is: <b>" + text + "</b>",
+                                QMessageBox::Yes | QMessageBox::No,
+                                QMessageBox::Yes);
+    }
+}
+
+void MainWindow::event(void)
+{
+    EventLabel *label = new EventLabel;
+
+    //设置事件lebel的标题
+    label->setWindowTitle("MouseEvent Demo");
+    //设置Label的大小
+    label->resize(300, 200);
+    //显示label
+    label->show();
+}
+
+void EventLabel::mouseMoveEvent(QMouseEvent *event)
+{
+    this->setText(QString("<center><h1>Move: (%1, %2)</h1></center>").arg(QString::number(event->x()),
+                                                                          QString::number(event->y())));
+}
+
+void EventLabel::mousePressEvent(QMouseEvent *event)
+{
+    #if 0
+        this->setText(QString("<center><h1>Press: (%1, %2)</h1></center>")
+                                                        .arg(QString::number(event->x()), 
+                                                           QString::number(event->y())));
+    #endif
+
+    //鼠标按下的事件中检测，如果按下的是左键，做我们的处理工作，如果不是左键，则调用父类的函数。
+    if(event->button() == Qt::LeftButton)
+    {
+        this->setText(QString("<center><h1>Press: (%1, %2)</h1></center>")
+                                                        .arg(QString::number(event->x()),
+                                                           QString::number(event->y())));
+    }
+    else
+    {
+        QLabel::mousePressEvent(event);
+    }
+}
+
+void EventLabel::mouseReleaseEvent(QMouseEvent *event)
+{
+    QString msg;
+
+    //鼠标按下的事件中检测，如果释放的是左键，做我们的处理工作，如果不是左键，则调用父类的函数。
+    if(event->button() == Qt::LeftButton)
+    {
+        msg.sprintf("<center><h1>Release: (%d, %d)</h1></center>",
+                                            event->x(), event->y());
+        this->setText(msg);
+    }
+    else
+    {
+        QLabel::mouseReleaseEvent(event);
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent * event)
+{
+        if(continueToClose()) {
+                event->accept();
+        } else {
+                event->ignore();
+        }
+}
+
+bool MainWindow::continueToClose()
+{
+        if(QMessageBox::question(this,
+                                            tr("Quit"),
+                                            tr("Are you sure to quit this application?"),
+                                            QMessageBox::Yes | QMessageBox::No,
+                                            QMessageBox::No)
+                == QMessageBox::Yes) {
+                return true;
+        } else {
+                return false;
+        }
+}
+
+void MainWindow::mypainter(void)
+{
+
+
+}
+
+PaintedWidget::PaintedWidget()
+{
+    resize(800, 600);
+    setWindowTitle(tr("Paint Demo"));
+}
+
+void PaintedWidget::paintEvent(QPaintEvent *event)
+{
+        QPainter painter(this);
+        painter.drawLine(80, 100, 650, 500);
+        painter.setPen(Qt::red);
+        painter.drawRect(10, 10, 100, 400);
+        painter.setPen(QPen(Qt::green, 5));
+        painter.setBrush(Qt::blue);
+        painter.drawEllipse(50, 150, 400, 200);
+}
+
 MainWindow::~MainWindow()
 {
     //delete ui;

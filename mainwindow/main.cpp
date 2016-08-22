@@ -10,8 +10,5 @@ int main(int argc, char *argv[])
     w.setWindowTitle("My App");
     w.show();
 
-    PaintedWidget p;
-    p.show();
-
     return a.exec();
 }

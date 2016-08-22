@@ -54,7 +54,6 @@ private slots:
     bool continueToClose();
     void mypainter(void);
 };
-
 class EventLabel : public QLabel
 {
 protected:
@@ -66,10 +65,9 @@ protected:
 class PaintedWidget : public QWidget
 {
 public:
-        PaintedWidget();
-
+    PaintedWidget();
 protected:
-        void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event);
 };
 
 

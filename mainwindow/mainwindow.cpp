@@ -381,8 +381,7 @@ void EventLabel::mouseReleaseEvent(QMouseEvent *event)
     //鼠标按下的事件中检测，如果释放的是左键，做我们的处理工作，如果不是左键，则调用父类的函数。
     if(event->button() == Qt::LeftButton)
     {
-        msg.sprintf("<center><h1>Release: (%d, %d)</h1></center>",
-                                            event->x(), event->y());
+        msg.sprintf("<center><h1>Release: (%d, %d)</h1></center>",event->x(), event->y());
         this->setText(msg);
     }
     else
@@ -393,48 +392,93 @@ void EventLabel::mouseReleaseEvent(QMouseEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent * event)
 {
-        if(continueToClose()) {
-                event->accept();
-        } else {
-                event->ignore();
-        }
+    if(continueToClose())
+    {
+        event->accept();
+    }
+    else
+    {
+        event->ignore();
+    }
 }
 
 bool MainWindow::continueToClose()
 {
         if(QMessageBox::question(this,
-                                            tr("Quit"),
-                                            tr("Are you sure to quit this application?"),
-                                            QMessageBox::Yes | QMessageBox::No,
-                                            QMessageBox::No)
-                == QMessageBox::Yes) {
-                return true;
-        } else {
-                return false;
+                                tr("Quit"),
+                                tr("Are you sure to quit this application?"),
+                                QMessageBox::Yes | QMessageBox::No,
+                                 QMessageBox::No)
+                == QMessageBox::Yes)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
 }
 
 void MainWindow::mypainter(void)
 {
+    PaintedWidget *p = new PaintedWidget;
 
+    //显示Paint
+    p->show();
 
 }
-
 PaintedWidget::PaintedWidget()
 {
     resize(800, 600);
     setWindowTitle(tr("Paint Demo"));
 }
-
 void PaintedWidget::paintEvent(QPaintEvent *event)
 {
-        QPainter painter(this);
-        painter.drawLine(80, 100, 650, 500);
-        painter.setPen(Qt::red);
-        painter.drawRect(10, 10, 100, 400);
-        painter.setPen(QPen(Qt::green, 5));
-        painter.setBrush(Qt::blue);
-        painter.drawEllipse(50, 150, 400, 200);
+    QPainter painter(this);
+#if 0
+
+    painter.drawLine(80, 100, 650, 500);
+    painter.setPen(Qt::red);
+    painter.drawRect(10, 10, 100, 400);
+    painter.setPen(QPen(Qt::green, 5));
+    painter.setBrush(Qt::blue);
+    painter.drawEllipse(50, 150, 400, 200);
+
+    painter.setPen(QPen(Qt::black, 5, Qt::DashDotLine, Qt::RoundCap));
+    painter.setBrush(Qt::yellow);
+    painter.drawEllipse(50, 150, 200, 150);
+
+    //打开反走样，不能自动关闭，需要在关闭的时候手动关闭
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setPen(QPen(Qt::black, 5, Qt::DashDotLine, Qt::RoundCap));
+    painter.setBrush(Qt::yellow);
+    painter.drawEllipse(300, 150, 200, 150);
+#endif
+
+    //线性渐变
+    QLinearGradient linearGradient(50, 50, 200, 200);
+    linearGradient.setColorAt(0.2, Qt::white);
+    linearGradient.setColorAt(0.6, Qt::green);
+    linearGradient.setColorAt(1.0, Qt::black);
+    painter.setBrush(QBrush(linearGradient));
+    painter.drawEllipse(50, 50, 200, 200);
+
+    //辐射渐变
+    QPointF centerpoint(250, 50);
+    qreal radius = 100.0;
+    QPointF focalpoint(250, 50);
+    //创建了一个QRadialGradient对象实例，参数分别为中心坐标，半径长度和焦点坐标,如果需要对称那么中心坐标和焦点坐标要一致
+    QRadialGradient RadialGradient(centerpoint, radius,focalpoint);
+
+    RadialGradient.setColorAt(0.2, Qt::white);
+    RadialGradient.setColorAt(0.6, Qt::green);
+    RadialGradient.setColorAt(1.0, Qt::black);
+    painter.setBrush(QBrush(RadialGradient));
+
+    //在相应的坐标画出来
+    painter.drawEllipse(250, 50, 200, 200);
+
+
 }
 
 MainWindow::~MainWindow()

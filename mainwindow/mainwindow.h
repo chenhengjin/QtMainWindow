@@ -38,21 +38,22 @@ private:
 
     QLabel *msgLabel;     //状态栏提示信息
 private slots:
-    void open(void);
-    void save(void);
-    void help(void);
-    void colorselect(void);
-    void messagebox_information(void);
-    void messagebox_critical(void);
-    void messagebox_warning(void);
-    void messagebox_question(void);
-    void messagebox_about(void);
-    void messagebox_message(void);
-    void inutdialog(void);
-    void event(void);
-    void closeEvent(QCloseEvent * event);
-    bool continueToClose();
-    void mypainter(void);
+    void open(void);      //打开文件
+    void save(void);      //保存文件
+    void help(void);      //帮助信息
+    void colorselect(void);  //颜色选择
+    void messagebox_information(void);  //信息
+    void messagebox_critical(void);     //禁止
+    void messagebox_warning(void);      //警告
+    void messagebox_question(void);     //询问
+    void messagebox_about(void);        //关于
+    void messagebox_message(void);      //自定义消息
+    void inputdialog(void);             //标准输入对话框
+    void event(void);                   //事件
+    void closeEvent(QCloseEvent * event);  //关闭事件
+    bool continueToClose();                //确认关闭
+
+    void mypainter(void);                  //QPainter画图
 };
 class EventLabel : public QLabel
 {

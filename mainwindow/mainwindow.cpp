@@ -130,7 +130,7 @@ MainWindow::MainWindow(QWidget *parent) :
     inputboxaction = new QAction(QString::fromLocal8Bit("&输入对话框"),this);
     //状态栏的提示语句
     inputboxaction->setStatusTip(QString::fromLocal8Bit("输入对话框"));
-    connect(inputboxaction, SIGNAL(triggered()), this, SLOT(inutdialog()));
+    connect(inputboxaction, SIGNAL(triggered()), this, SLOT(inputdialog()));
     //新建一个菜单
     QMenu *input = menuBar()->addMenu(QString::fromLocal8Bit("&输入对话框"));
     //使用这个QMenu指针添加这个QAction
@@ -167,6 +167,9 @@ MainWindow::MainWindow(QWidget *parent) :
     statusBar()->setStyleSheet(QString("QStatusBar::item{border: 0px}"));
 }
 
+/**
+ * @brief 打开一个文件
+ */
 void MainWindow::open(void)
 {
     //弹出一个标准对话框，标题为Open，提示语为Open a file，并且有一个OK按键
@@ -186,6 +189,9 @@ void MainWindow::open(void)
 
 }
 
+/**
+ * @brief 保存一个文件
+ */
 void MainWindow::save(void)
 {
     //弹出一个标准对话框，标题为Open，提示语为Open a file，并且有一个OK按键
@@ -204,12 +210,19 @@ void MainWindow::save(void)
 
 }
 
+/**
+ * @brief 帮助
+ */
 void MainWindow::help(void)
 {
     //弹出一个标准对话框，标题为help，提示语为暂时没有信息，并且有一个OK按键
     QMessageBox::information(NULL, tr("help"), tr("暂时没有信息"));
 
 }
+
+/**
+ * @brief 颜色选择对话框
+ */
 void MainWindow::colorselect(void)
 {
     //弹出一个标准对话框，标题为help，提示语为暂时没有信息，并且有一个OK按键
@@ -301,7 +314,7 @@ void MainWindow::messagebox_message(void)
 
 
 
-void MainWindow::inutdialog(void)
+void MainWindow::inputdialog(void)
 {
     bool isOK;
 
@@ -470,14 +483,20 @@ void PaintedWidget::paintEvent(QPaintEvent *event)
     //创建了一个QRadialGradient对象实例，参数分别为中心坐标，半径长度和焦点坐标,如果需要对称那么中心坐标和焦点坐标要一致
     QRadialGradient RadialGradient(centerpoint, radius,focalpoint);
 
-    RadialGradient.setColorAt(0.2, Qt::white);
+    RadialGradient.setColorAt(0.3, Qt::white);
     RadialGradient.setColorAt(0.6, Qt::green);
     RadialGradient.setColorAt(1.0, Qt::black);
     painter.setBrush(QBrush(RadialGradient));
-
     //在相应的坐标画出来
-    painter.drawEllipse(250, 50, 200, 200);
+    painter.drawEllipse(  250,50,200, 200);
 
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    QLinearGradient linearGradient2(50,250,  70, 270);
+    linearGradient2.setColorAt(0.3, Qt::white);
+    linearGradient2.setColorAt(0.6, Qt::green);
+    linearGradient2.setColorAt(1.0, Qt::black);
+    painter.setPen(QPen(QBrush(linearGradient2), 20));
+    painter.drawLine( 50,250, 70, 270);
 
 }
 

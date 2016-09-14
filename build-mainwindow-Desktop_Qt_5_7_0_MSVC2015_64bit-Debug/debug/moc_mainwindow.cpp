@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
     QByteArrayData data[18];
-    char stringdata0[224];
+    char stringdata0[225];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -41,19 +41,19 @@ QT_MOC_LITERAL(8, 82, 18), // "messagebox_warning"
 QT_MOC_LITERAL(9, 101, 19), // "messagebox_question"
 QT_MOC_LITERAL(10, 121, 16), // "messagebox_about"
 QT_MOC_LITERAL(11, 138, 18), // "messagebox_message"
-QT_MOC_LITERAL(12, 157, 10), // "inutdialog"
-QT_MOC_LITERAL(13, 168, 5), // "event"
-QT_MOC_LITERAL(14, 174, 10), // "closeEvent"
-QT_MOC_LITERAL(15, 185, 12), // "QCloseEvent*"
-QT_MOC_LITERAL(16, 198, 15), // "continueToClose"
-QT_MOC_LITERAL(17, 214, 9) // "mypainter"
+QT_MOC_LITERAL(12, 157, 11), // "inputdialog"
+QT_MOC_LITERAL(13, 169, 5), // "event"
+QT_MOC_LITERAL(14, 175, 10), // "closeEvent"
+QT_MOC_LITERAL(15, 186, 12), // "QCloseEvent*"
+QT_MOC_LITERAL(16, 199, 15), // "continueToClose"
+QT_MOC_LITERAL(17, 215, 9) // "mypainter"
 
     },
     "MainWindow\0open\0\0save\0help\0colorselect\0"
     "messagebox_information\0messagebox_critical\0"
     "messagebox_warning\0messagebox_question\0"
     "messagebox_about\0messagebox_message\0"
-    "inutdialog\0event\0closeEvent\0QCloseEvent*\0"
+    "inputdialog\0event\0closeEvent\0QCloseEvent*\0"
     "continueToClose\0mypainter"
 };
 #undef QT_MOC_LITERAL
@@ -124,7 +124,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 7: _t->messagebox_question(); break;
         case 8: _t->messagebox_about(); break;
         case 9: _t->messagebox_message(); break;
-        case 10: _t->inutdialog(); break;
+        case 10: _t->inputdialog(); break;
         case 11: _t->event(); break;
         case 12: _t->closeEvent((*reinterpret_cast< QCloseEvent*(*)>(_a[1]))); break;
         case 13: { bool _r = _t->continueToClose();

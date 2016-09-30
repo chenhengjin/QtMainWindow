@@ -31,12 +31,12 @@ private:
     QAction *messageboxaction_question; //question对话框
     QAction *messageboxaction_about; //about对话框
     QAction *messageboxaction_message; //自定义信息对话框
-
     QAction *inputboxaction; //输入对话框
     QAction *eventaction; //事件对话框
     QAction *painteraction; //QPainter对话框
-
     QLabel *msgLabel;     //状态栏提示信息
+
+//槽函数
 private slots:
     void open(void);      //打开文件
     void save(void);      //保存文件
@@ -52,7 +52,6 @@ private slots:
     void event(void);                   //事件
     void closeEvent(QCloseEvent * event);  //关闭事件
     bool continueToClose();                //确认关闭
-
     void mypainter(void);                  //QPainter画图
 };
 class EventLabel : public QLabel

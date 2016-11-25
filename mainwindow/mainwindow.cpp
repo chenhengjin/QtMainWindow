@@ -158,6 +158,18 @@ MainWindow::MainWindow(QWidget *parent) :
     //使用这个QMenu指针添加这个QAction
     painter->addAction(painteraction);
 
+    /*********************************QSerialPort*****************************/
+    //第一个参数显示文本信息，第二个参数是parent，通常写this
+    serailportaction = new QAction(QString::fromLocal8Bit("&串口"),this);
+    //状态栏的提示语句
+    serailportaction->setStatusTip(QString::fromLocal8Bit("串口"));
+    connect(serailportaction, SIGNAL(triggered()), this, SLOT(myserailport()));
+    //新建一个菜单
+    QMenu *seriaport = menuBar()->addMenu(QString::fromLocal8Bit("&串口"));
+    //使用这个QMenu指针添加这个QAction
+    seriaport->addAction(serailportaction);
+
+
 /*********************************添加状态栏*******************************************/
     msgLabel = new QLabel;
     msgLabel->setMinimumSize(msgLabel->sizeHint());
@@ -216,7 +228,7 @@ void MainWindow::save(void)
 void MainWindow::help(void)
 {
     //弹出一个标准对话框，标题为help，提示语为暂时没有信息，并且有一个OK按键
-    QMessageBox::information(NULL, tr("help"), tr("暂时没有信息"));
+    QMessageBox::information(NULL, tr("help"), QString::fromLocal8Bit("暂时没有信息"));
 
 }
 
@@ -370,7 +382,7 @@ void EventLabel::mousePressEvent(QMouseEvent *event)
 {
     #if 0
         this->setText(QString("<center><h1>Press: (%1, %2)</h1></center>")
-                                                        .arg(QString::number(event->x()), 
+                                                        .arg(QString::number(event->x()),
                                                            QString::number(event->y())));
     #endif
 
@@ -499,6 +511,16 @@ void PaintedWidget::paintEvent(QPaintEvent *event)
     painter.drawLine( 50,250, 70, 270);
 
 }
+void MainWindow::myserailport(void)
+{
+    QWidget *p_serial = new QWidget;
+
+    //显示Serial Port Demo window
+    p_serial->show();
+    p_serial ->setWindowTitle(QString::fromLocal8Bit("串口调试助手"));
+}
+
+
 
 MainWindow::~MainWindow()
 {

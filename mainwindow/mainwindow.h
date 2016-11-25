@@ -34,6 +34,7 @@ private:
     QAction *inputboxaction; //输入对话框
     QAction *eventaction; //事件对话框
     QAction *painteraction; //QPainter对话框
+    QAction *serailportaction; //QPainter对话框
     QLabel *msgLabel;     //状态栏提示信息
 
 //槽函数
@@ -53,6 +54,8 @@ private slots:
     void closeEvent(QCloseEvent * event);  //关闭事件
     bool continueToClose();                //确认关闭
     void mypainter(void);                  //QPainter画图
+    void myserailport(void);                  //串口调试
+
 };
 class EventLabel : public QLabel
 {
